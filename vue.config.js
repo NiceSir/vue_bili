@@ -1,8 +1,8 @@
-const path = require('path'); //引入path模块
+const path = require("path") //引入path模块
 function resolve(dir) {
   return path.join(__dirname, dir) //path.join(__dirname)设置绝对路径
 }
-module.exports={
+module.exports = {
   // 公共路径(必须有的)
   publicPath: "./",
   // 输出文件目录
@@ -15,10 +15,19 @@ module.exports={
   runtimeCompiler: false,
   productionSourceMap: true, // 不需要生产环境的设置false可以减小dist文件大小，加速构建
   devServer: {
-      open:true,
+    open: true,
     //   host:0.0.0.0,
-      port:8000,
-      proxy:null
+    port:8000,
+    proxy: {
+      "/api": {
+        target: "http://112.74.99.5:3000/web/api",
+        pathRewrite: {
+          "^/api": "" // 路径重写，第一个与上面相同，第二个 为server.context-path（服务器的上下文）
+        },
+        ws: true,
+        changeOrigin: true
+      }
+    }
   },
   css: {
     loaderOptions: {
@@ -30,11 +39,11 @@ module.exports={
       }
     }
   },
-  chainWebpack:config=>{
-      config.resolve.alias
-        .set('@', resolve('./src'))
-        .set('components', resolve('./src/components'))
-        .set('views', resolve('./src/views'))
-        .set('assets', resolve('./src/assets'))
+  chainWebpack: config => {
+    config.resolve.alias
+      .set("@", resolve("./src"))
+      .set("components", resolve("./src/components"))
+      .set("views", resolve("./src/views"))
+      .set("assets", resolve("./src/assets"))
   }
 }

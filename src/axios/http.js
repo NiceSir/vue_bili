@@ -3,11 +3,12 @@ import router from "@/router/"
 import Vue from "vue"
 
 const http = axios.create({
-  baseURL: "http://112.74.99.5:3000/web/api"
+  baseURL: "/api"
 })
 
 http.interceptors.request.use(
   function(config) {
+    console.log(config)
     if (localStorage.getItem("id") && localStorage.getItem("token")) {
       config.headers.Authorization = "Bearer " + localStorage.getItem("token")
     }
